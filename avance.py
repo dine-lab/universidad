@@ -1,27 +1,30 @@
 #Programa de agregar contactos-Interfaz
-class ContacApp:
-    def _init_(self):
-        self.contactos = []
+#Manejo de archivos, parte KIM
+class AgendaContactosArchivos(AgendaContactos):
+    def _init_(self, archivo="contactos.txt"):
+        super()._init_()  
+        self.archivo = archivo
+        self.cargar_contactos()
 
-    def show_menu(self):
-        while True:
-            print("\n Menu de contactos:")
-            print("1. Agregar contacto.")
-            print("2. Eliminar contacto.")
-            print("3. Buscar contacto.")
-            print("4. Mostrar contactos.")
-            print("5. Salir.")
-            opcion=input("Seleccione una opción: ")
-            if opcion == "1":
-                self.agregar_contacto()
-            elif opcion == "2":
-                self.eliminar_contacto()
-            elif opcion == "3":
-                self.buscar_contacto()
-            elif opcion == "4":
-                self.mostrar_contactos()
-            elif opcion == "5":
-                print("Saliendo del programa...")
-                break
-            else:
-                print("Opción invalida, intente de nuevo")
+    def guardar_contactos(self):
+        """Guarda los contactos en un archivo de texto."""
+        with open(self.archivo, "w") as f:
+            for contacto in self.contactos:
+                f.write(f"{contacto['nombre']},{contacto['telefono']}\n")
+
+    def cargar_contactos(self):
+        """Carga los contactos desde un archivo de texto."""
+        if os.path.exists(self.archivo):
+            with open(self.archivo, "r") as f:
+                for linea in f:
+                    nombre, telefono = linea.strip().split(",")
+                    self.contactos.append({"nombre": nombre, "telefono": telefono})
+
+    #guardarlos en el txt
+    def agregar_contacto(self):
+        super().agregar_contacto()
+        self.guardar_contactos()
+
+    def eliminar_contacto(self):
+        super().eliminar_contacto()
+        self.guardar_contactos()
