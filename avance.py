@@ -37,5 +37,13 @@ class AgendaContactos:
                 return
         
         print("No se encontró el contacto para eliminar.")
+          
+    def mostrar_contactos(self):
+        if not self.contactos:
+            print("No hay contactos en la lista.")
+        else:
+            print("\nLista de contactos:")
+            for contacto in self.contactos:
+                print(f"{contacto['nombre']} - {contacto['telefono']}")
 
 agenda = AgendaContactos()
